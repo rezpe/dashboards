@@ -16,12 +16,12 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a ng-click="loadModel()" href="#">
+            <a ng-click="loadModel()" href="#/">
               <span class="glyphicon glyphicon-upload" ></span> Load
             </a>
           </li>
           <li>
-            <a ng-click="saveModel()" href="#">
+            <a ng-click="saveModel()" href="#/">
               <span class="glyphicon glyphicon-save" aria-hidden="true"></span> FileSave</li>
           </a>
         </ul>
@@ -37,6 +37,7 @@
 </div>
 <div class="container">
   <div class="row">
-    <adf-dashboard name="mydashboard" collapsible="true" structure="6-6" adf-model="model" />
+    <adf-dashboard name="mydashboard" collapsible="false" structure="6-6" adf-model="dashboard.model" />
   </div>
 </div>
+<input style="visibility:hidden;" type="file" id="inputFile" />

@@ -20,7 +20,8 @@ angular
     'adf.widget.Graph',
     'ui.codemirror',
     'uiGmapgoogle-maps',
-    'chart.js'
+    'chart.js',
+    'ngFileSaver'
   ])
   .config(function ($routeProvider) {
     $routeProvider

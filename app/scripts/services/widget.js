@@ -258,12 +258,14 @@ angular.module('adf.widget.Parameters', ['adf.provider'])
     })
     $rootScope.$broadcast('widgetConfigChanged');
   }
+
   $scope.refresh = function() {
     config.parameters.forEach(function(value, index) {
       $rootScope.parameters[value.name] = value.value
     })
     $rootScope.$broadcast('widgetConfigChanged');
   }
+  
 })
 
 .controller('ParamEditCtrl', function($scope, config, $rootScope) {

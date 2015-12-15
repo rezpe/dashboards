@@ -18,7 +18,7 @@ angular.module('tiPortal3App')
     $scope.token = localStorageService.get("token")
 
     $scope.saveModel = function() {
-      var blob = new Blob([JSON.stringify($scope.dashboard)], {
+      var blob = new Blob([JSON.stringify($scope.dashboard.model)], {
         type: "text/plain;charset=utf-8"
       });
       FileSaver.saveAs(blob, "dashboard.json");
@@ -35,10 +35,13 @@ angular.module('tiPortal3App')
           var contents = e.target.result;
           //Put the file in the list
           var load = JSON.parse(contents);
+          console.log(load)
           //Add to objects
           $scope.$apply(function() {
-            localStorageService.set("dashboard", JSON.parse(load))
-            $scope.dashboard = load;
+            localStorageService.set("dashboard", JSON.stringify(load))
+            $scope.dashboard = {
+              model: load
+            };
           })
         }
         r.readAsText(selected_file);
@@ -48,7 +51,6 @@ angular.module('tiPortal3App')
 
     var model = JSON.parse(localStorageService.get("dashboard"))
     console.log(model)
-
     if (!model) {
       model = {
         rows: [{

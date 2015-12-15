@@ -8,18 +8,20 @@
  * Controller of the tiPortal3App
  */
 angular.module('tiPortal3App')
-  .controller('MainCtrl', function(FileSaver, $scope, $rootScope) {
+  .controller('MainCtrl', function(FileSaver, $scope, $rootScope, localStorageService) {
 
     $scope.$watch("token", function notify(newvalue, oldvalue) {
       $rootScope.token = newvalue;
+      localStorageService.set("token", newvalue)
     })
 
-    $scope.saveModel = function() {
+    $scope.token = localStorageService.get("token")
 
+    $scope.saveModel = function() {
       var blob = new Blob([JSON.stringify($scope.dashboard)], {
-          type: "text/plain;charset=utf-8"
-        });
-        FileSaver.saveAs(blob, "dashboard.json");
+        type: "text/plain;charset=utf-8"
+      });
+      FileSaver.saveAs(blob, "dashboard.json");
     }
 
     $scope.loadModel = function() {
@@ -35,6 +37,7 @@ angular.module('tiPortal3App')
           var load = JSON.parse(contents);
           //Add to objects
           $scope.$apply(function() {
+            localStorageService.set("dashboard", JSON.parse(load))
             $scope.dashboard = load;
           })
         }
@@ -43,22 +46,30 @@ angular.module('tiPortal3App')
       inputElement.click();
     }
 
-    var model = {
-      rows: [{
-        columns: [{
-          styleClass: 'col-md-4',
-          widgets: []
-        }, {
-          styleClass: 'col-md-8',
-          widgets: []
+    var model = JSON.parse(localStorageService.get("dashboard"))
+    console.log(model)
+
+    if (!model) {
+      model = {
+        rows: [{
+          columns: [{
+            styleClass: 'col-md-4',
+            widgets: []
+          }, {
+            styleClass: 'col-md-8',
+            widgets: []
+          }]
         }]
-      }]
-    };
+      };
+    }
 
     $scope.dashboard = {
       model: model
     };
 
-
+    $scope.$on('adfDashboardChanged', function(event, name, model) {
+      localStorageService.set(name, model);
+      localStorageService.set("dashboard", JSON.stringify(model))
+    });
 
   });

@@ -21,7 +21,8 @@ angular
     'ui.codemirror',
     'uiGmapgoogle-maps',
     'chart.js',
-    'ngFileSaver'
+    'ngFileSaver',
+    'LocalStorageModule'
   ])
   .config(function ($routeProvider) {
     $routeProvider

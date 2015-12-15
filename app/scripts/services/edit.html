@@ -1,6 +1,11 @@
 <form role="form">
   <div class="form-group">
-
+    <label for="sample">Select ChartType</label>
+    </br>
+    <select ng-model="selectedWebservice"
+            ng-options="item as item.Description for item in webservices"
+            ng-change="setWebservice()"></select>
+    </br>
     <label for="sample">Enter url</label>
     <input type="text" class="form-control" ng-model="config.url" />
 
@@ -25,8 +30,10 @@
 
 <form role="form">
   <div class="form-group">
-    <label for="sample">Enter ChartType</label>
-    <input type="text" class="form-control" ng-model="config.chartType" />
+    <label for="sample">Select ChartType</label>
+    </br>
+    <select ng-model="config.chartType"
+            ng-options="item as item for item in chartOptions"></select>
   </div>
 </form>
 

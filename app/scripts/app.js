@@ -17,7 +17,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'adf', 'adf.structures.base', 'adf.widget.clock',
-    'adf.widget.Graph'
+    'adf.widget.Graph',
+    'ui.codemirror',
+    'uiGmapgoogle-maps',
+    'chart.js'
   ])
   .config(function ($routeProvider) {
     $routeProvider

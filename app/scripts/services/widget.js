@@ -33,7 +33,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
 
           var url = config.url;
           var param = config.param;
-          var totalUrl = tmpl(url + param, $rootScope.parameters)
+          var totalUrl = url + param
 
           $http.get(totalUrl).success(function(data) {
             deferred.resolve(data);
@@ -102,7 +102,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
   $scope.webservices = [{
     "url": "",
     "Description": "Custom Web Service",
-    "parameters": "market+ptype+period+onds"
+    "parameters": ""
   },{
     "url": "api/search_by_search_period",
     "Description": "Search hits by look date API",
@@ -179,6 +179,12 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     "parameters": "rest_obeject_id"
   }]
 
+  $scope.setWebservice = function(){
+    var item = $scope.selectedWebservice
+    config.url = item.url;
+    config.param = "?"+item.parameters.split("+").join("=*,")+"=*";
+  }
+
   $scope.chartOptions = [
     "Table",
     'Bar',
@@ -192,7 +198,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
 
   $scope.callTI = function() {
 
-    var token = "zLzPzvcEjH2QjB2c9tgu"
+    var token = $rootScope.token
     $http.defaults.headers.common.Authorization = "Token " + token;
     var json = "application/json"
     $http.defaults.headers.common.Accept = json;
@@ -204,7 +210,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
 
     var url = config.url;
     var param = config.param;
-    var totalUrl = tmpl(url + param, $rootScope.parameters)
+    var totalUrl = url + param
 
     $http.get(totalUrl).success(function(data) {
       $scope.data = JSON.stringify(data, null, " ")

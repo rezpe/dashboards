@@ -1,4 +1,42 @@
+<div class="header">
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
 
-<div class="row">
-  <adf-dashboard name="mydashboard" collapsible="true" structure="6-6" adf-model="model" />
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <a class="navbar-brand" href="#/">TI Dashboard Builder</a>
+      </div>
+
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a ng-click="loadModel()" href="#">
+              <span class="glyphicon glyphicon-upload" ></span> Load
+            </a>
+          </li>
+          <li>
+            <a ng-click="saveModel()" href="#">
+              <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save</li>
+          </a>
+        </ul>
+        <form class="navbar-form navbar-right" role="token">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Token" ng-model="token">
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <adf-dashboard name="mydashboard" collapsible="true" structure="6-6" adf-model="model" />
+  </div>
 </div>

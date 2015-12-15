@@ -1,0 +1,18 @@
+<form role="form">
+  <h2>Add and edit parameters</h2>
+</form>
+
+<form role="form">
+  <div class="form-group">
+    <input type="text" ng-model="inputname"></input>
+    <a class="button" ng-click="addParam(param)">Add</a>
+  </div>
+</form>
+
+<form role="form">
+  <h2>List of parameters</h2>
+  <div class="form-group" ng-repeat="param in config.parameters">
+    <label>{{param.name}}</label>
+    <a ng-click="deleteParam(param)">Remove</a>
+  </div>
+</form>

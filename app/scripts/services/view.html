@@ -1,0 +1,44 @@
+<style>
+  .angular-google-map-container {
+    height: 400px;
+  }
+</style>
+
+
+<div ng-if="chartType=='Table'">
+  <table class="table">
+    <thead>
+      <tr>
+        <th ng-repeat="label in header">{{label}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in data">
+        <td ng-repeat="element in row">
+          {{row[$index]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div ng-if="chartType=='Text'">
+  <textarea class="col-md-12" style="height:400px">
+    {{data}}
+  </textarea>
+</div>
+
+<div ng-if="['Bar','Line','Pie','Doughnut','Radar'].indexOf(chartType)!=-1">
+  <canvas id="base" class="chart-base" chart-type="chartType" data="data" labels="labels" legend="true"></canvas>
+</div>
+
+
+<ui-gmap-google-map ng-if="chartType=='GoogleMap'" center='map.center' zoom='map.zoom'>
+
+  <ui-gmap-markers models='points' coords="'self'">
+  </ui-gmap-markers>
+
+  <ui-gmap-polylines models='routes' path="'path'" stroke="'stroke'" geodesic="true">
+  </ui-gmap-polylines>
+
+</ui-gmap-google-map>

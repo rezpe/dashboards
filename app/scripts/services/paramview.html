@@ -1,0 +1,16 @@
+<div>
+
+  <form role="form">
+    <div class="form-group" ng-repeat="param in config.parameters">
+      <label>{{param.name}}</label>
+      <input type="text" ng-model="param.value"></input>
+    </div>
+  </form>
+
+  <form role="form">
+    <div class="form-group" >
+      <a ng-click="refresh()">Refresh</a>
+    </div>
+  </form>
+
+</div>

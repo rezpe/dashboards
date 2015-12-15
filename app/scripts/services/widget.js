@@ -7,48 +7,36 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     .widget('Graph', {
       title: 'Graph',
       description: 'It shows a graph',
-      templateUrl: '{widgetsPath}/Graph/src/view.html',
+      templateUrl: '{widgetsPath}/scripts/services/view.html',
       reload: true,
       controller: 'GraphCtrl',
       resolve: {
-        data: function(config, $http, $q, $window) {
+        data: function(config, $http, $q, $rootScope) {
 
-          if (!config.query) {
-            return
+          if (!$rootScope.parameters) {
+            $rootScope.parameters = {}
           }
-          //We create the job and we keep on chekcing the status until
-          //an answer is available
-          var token = $window.sessionStorage.token
+
+          var deferred = $q.defer();
+          if (config.cache) {
+            setTimeout(function() {
+              deferred.resolve(config.data);
+            }, 500);
+            return deferred.promise;
+          }
+
+          var token = $rootScope.token
           $http.defaults.headers.common.Authorization = "Token " + token;
           var json = "application/json"
           $http.defaults.headers.common.Accept = json;
           $http.defaults.headers.common["Content-Type"] = json;
 
-          var host = "https://staging-api.travel-intelligence.com/ti-sql-raw/api/metal/v1/sql/queries";
-          var query = {
-            queries: {
-              sql: config.query
-            }
-          };
-          var deferred = $q.defer();
+          var url = config.url;
+          var param = config.param;
+          var totalUrl = tmpl(url + param, $rootScope.parameters)
 
-          $http.post(host, query).success(function(data) {
-            var href = data.queries.href;
-            //Once we get the id we keep on calling the web service to check status
-            //if good, we retrieve the data
-            (function checkStatus() {
-              $http.get(href + "?offset=0&limit=100000").success(function(data) {
-                if (data.queries.status == "finished") {
-                  console.log(data)
-                  deferred.resolve(data);
-                } else {
-                  setTimeout(checkStatus, 1000);
-                }
-              }).error(function() {
-                deferred.reject();
-              });
-            }());
-
+          $http.get(totalUrl).success(function(data) {
+            deferred.resolve(data);
           }).error(function() {
             deferred.reject();
           });
@@ -57,7 +45,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
         }
       },
       edit: {
-        templateUrl: '{widgetsPath}/Graph/src/edit.html',
+        templateUrl: '{widgetsPath}/scripts/services/edit.html',
         controller: 'EditGraphCtrl',
       }
     });
@@ -70,26 +58,18 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     $scope.chartType = config.chartType
 
     if (config.chartType == "Table") {
-      $scope.labels = data.queries.schema
-      $scope.data = data.queries.rows
+      $scope.header = eval(config.headerFormula)
+      $scope.data = eval(config.dataFormula)
     }
+    if (config.chartType == "Text") {
+      $scope.data = JSON.stringify(data, null, ' ')
+    }
+
     if (['Bar', 'Line', 'Pie', 'Doughnut', 'Radar', 'Polar'].indexOf(config.chartType) != -1) {
       $scope.labels = eval(config.labelsFormula)
       $scope.data = eval(config.dataFormula)
     }
-    if (['Map'].indexOf(config.chartType) != -1) {
-      $scope.points = eval(config.pointsFormula)
-      $scope.routes = eval(config.routesFormula)
-      $scope.center = eval(config.center)
-      $scope.scale = eval(config.scale)
-    }
-    if (['Gauge'].indexOf(config.chartType) != -1) {
-      $scope.title = config.title
-      $scope.label = config.label
-      $scope.value = eval(config.value)
-      $scope.min = eval(config.min)
-      $scope.max = eval(config.max)
-    }
+
     if (['GoogleMap'].indexOf(config.chartType) != -1) {
       $scope.map = {
         center: {
@@ -98,79 +78,32 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
         },
         zoom: parseInt(config.scale)
       }
-      if (config.geocoding = true) {
-
-        var googleGeocoder = new GeocoderJS.createGeocoder({
-          'provider': 'google'
-        });
-
-        googleGeocoder.geocode(config.center, function(result) {
-          $scope.$apply(function() {
-            $scope.map.center.latitude = result[0].latitude;
-            $scope.map.center.longitude = result[0].longitude;
-          })
-        });
-
-        $scope.points = eval(config.pointsFormula);
-
-        $scope.points = $scope.points.map(function(value, index) {
-          value.id = value.name;
-          value.options = {}
-          value.options.title = value.name
-          return value;
-        });
-
-        $scope.points.forEach(function(value, index) {
-          googleGeocoder.geocode(value.name, function(result) {
-            $scope.$apply(function() {
-              $scope.points[index].latitude = result[0].latitude;
-              $scope.points[index].longitude = result[0].longitude;
-            });
-          });
-        });
-
-        $scope.routes = eval(config.routesFormula)
-
-        $scope.routes = $scope.routes.map(function(value, index) {
-          value.path = [{}, {}];
-          value.geodesic = true;
-          return value;
-        })
-
-        $scope.routes.geodesic = true;
-
-        $scope.routes.forEach(function(value, index) {
-          googleGeocoder.geocode(value.origin, function(result) {
-            $scope.$apply(function() {
-              $scope.routes[index].path[0].latitude = result[0].latitude;
-              $scope.routes[index].path[0].longitude = result[0].longitude;
-            });
-          });
-
-          googleGeocoder.geocode(value.destination, function(result) {
-            $scope.$apply(function() {
-              $scope.routes[index].path[1].latitude = result[0].latitude;
-              $scope.routes[index].path[1].longitude = result[0].longitude;
-            });
-          });
-
-        });
-
-
-      } else {
-        $scope.points = eval(config.pointsFormula)
-        $scope.routes = eval(config.routesFormula)
-      }
-
+      $scope.points = eval(config.pointsFormula)
+      $scope.routes = eval(config.routesFormula)
     }
   }
 })
 
 //Editor Controller
-.controller('EditGraphCtrl', function($scope, config, $rootScope) {
+.controller('EditGraphCtrl', function($scope, $http, config, $rootScope) {
 
-  $scope.showws = false;
+  $scope.jsedit = {
+    lineWrapping: true,
+    lineNumbers: true,
+    mode: 'javascript'
+  };
+
+  $scope.sqledit = {
+    lineWrapping: true,
+    lineNumbers: true,
+    mode: 'sql',
+  };
+
   $scope.webservices = [{
+    "url": "",
+    "Description": "Custom Web Service",
+    "parameters": "market+ptype+period+onds"
+  },{
     "url": "api/search_by_search_period",
     "Description": "Search hits by look date API",
     "parameters": "market+ptype+period+onds"
@@ -246,24 +179,6 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     "parameters": "rest_obeject_id"
   }]
 
-  $scope.showWs = function() {
-    $scope.showws = true;
-  }
-
-
-
-  $scope.jsedit = {
-    lineWrapping: true,
-    lineNumbers: true,
-    mode: 'javascript',
-  };
-
-  $scope.sqledit = {
-    lineWrapping: true,
-    lineNumbers: true,
-    mode: 'sql',
-  };
-
   $scope.chartOptions = [
     "Table",
     'Bar',
@@ -272,9 +187,93 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     'Doughnut',
     'Radar',
     'Polar',
-    'Gauge',
-    "Map",
     "GoogleMap",
   ]
+
+  $scope.callTI = function() {
+
+    var token = "zLzPzvcEjH2QjB2c9tgu"
+    $http.defaults.headers.common.Authorization = "Token " + token;
+    var json = "application/json"
+    $http.defaults.headers.common.Accept = json;
+    $http.defaults.headers.common["Content-Type"] = json;
+
+    if (!$rootScope.parameters) {
+      $rootScope.parameters = {}
+    }
+
+    var url = config.url;
+    var param = config.param;
+    var totalUrl = tmpl(url + param, $rootScope.parameters)
+
+    $http.get(totalUrl).success(function(data) {
+      $scope.data = JSON.stringify(data, null, " ")
+    }).error(function(error) {
+      $scope.data = JSON.stringify(error, null, " ")
+    });
+  }
+
+  if (config.cache) {
+    $scope.data = JSON.stringify(config.data)
+  }
+
+  $scope.toggleCache = function() {
+    if (!config.cache) {
+      config.cache = true
+      config.data = JSON.parse($scope.data)
+    } else {
+      config.cache = false
+      config.data = ""
+      $scope.data = ""
+    }
+  }
+});
+
+angular.module('adf.widget.Parameters', ['adf.provider'])
+  .config(function(dashboardProvider) {
+    dashboardProvider
+      .widget('Parameters', {
+        title: 'Parameters',
+        description: 'This widget lets you create and update parameters',
+        templateUrl: '{widgetsPath}/scripts/services/paramview.html',
+        controller: 'ParamCtrl',
+        edit: {
+          templateUrl: '{widgetsPath}/scripts/services/paramedit.html',
+          controller: 'ParamEditCtrl',
+        }
+      });
+  })
+.controller('ParamCtrl', function($scope, config, $rootScope) {
+
+  if (!$rootScope.parameters) {
+    $rootScope.parameters = {}
+    config.parameters.forEach(function(value, index) {
+      $rootScope.parameters[value.name] = value.value
+    })
+    $rootScope.$broadcast('widgetConfigChanged');
+  }
+  $scope.refresh = function() {
+    config.parameters.forEach(function(value, index) {
+      $rootScope.parameters[value.name] = value.value
+    })
+    $rootScope.$broadcast('widgetConfigChanged');
+  }
+})
+
+.controller('ParamEditCtrl', function($scope, config, $rootScope) {
+
+  if (!config.parameters) {
+    config.parameters = []
+  }
+  $scope.addParam = function() {
+    config.parameters.push({
+      name: $scope.inputname,
+      value: ""
+    })
+  }
+  $scope.deleteParam = function(param) {
+    var index = config.parameters.indexOf(param)
+    config.parameters.splice(index, 1)
+  }
 
 })

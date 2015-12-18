@@ -12,45 +12,45 @@ angular.module('tiPortal3App')
 
     $scope.$watch("token", function notify(newvalue, oldvalue) {
       $rootScope.token = newvalue;
-      localStorageService.set("token", newvalue)
-    })
+      localStorageService.set("token", newvalue);
+    });
 
-    $scope.token = localStorageService.get("token")
+    $scope.token = localStorageService.get("token");
 
     $scope.saveModel = function() {
       var blob = new Blob([JSON.stringify($scope.dashboard.model)], {
         type: "text/plain;charset=utf-8"
       });
       FileSaver.saveAs(blob, "dashboard.json");
-    }
+    };
 
     $scope.loadModel = function() {
       var inputElement = $("#inputFile")[0];
       inputElement.addEventListener("change", handleFiles, false);
 
-      function handleFiles() {
+      var handleFiles = function () {
         var selected_file = $("#inputFile")[0].files[0];
         var r = new FileReader();
         r.onload = function(e) {
           var contents = e.target.result;
           //Put the file in the list
           var load = JSON.parse(contents);
-          console.log(load)
+
           //Add to objects
           $scope.$apply(function() {
-            localStorageService.set("dashboard", JSON.stringify(load))
+            localStorageService.set("dashboard", JSON.stringify(load));
             $scope.dashboard = {
               model: load
             };
-          })
-        }
+          });
+        };
         r.readAsText(selected_file);
-      }
+      };
       inputElement.click();
-    }
+    };
 
-    var model = JSON.parse(localStorageService.get("dashboard"))
-    console.log(model)
+    var model = JSON.parse(localStorageService.get("dashboard"));
+
     if (!model) {
       model = {
         rows: [{
@@ -71,7 +71,7 @@ angular.module('tiPortal3App')
 
     $scope.$on('adfDashboardChanged', function(event, name, model) {
       localStorageService.set(name, model);
-      localStorageService.set("dashboard", JSON.stringify(model))
+      localStorageService.set("dashboard", JSON.stringify(model));
     });
 
   });

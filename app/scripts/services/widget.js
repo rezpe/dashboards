@@ -14,7 +14,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
         data: function(config, $http, $q, $rootScope) {
 
           if (!$rootScope.parameters) {
-            $rootScope.parameters = {}
+            $rootScope.parameters = {};
           }
 
           var deferred = $q.defer();
@@ -25,15 +25,15 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
             return deferred.promise;
           }
 
-          var token = $rootScope.token
+          var token = $rootScope.token;
           $http.defaults.headers.common.Authorization = "Token " + token;
-          var json = "application/json"
+          var json = "application/json";
           $http.defaults.headers.common.Accept = json;
           $http.defaults.headers.common["Content-Type"] = json;
 
           var url = config.url;
           var param = config.param;
-          var totalUrl = url + param
+          var totalUrl = url + param;
 
           $http.get(totalUrl).success(function(data) {
             deferred.resolve(data);
@@ -55,19 +55,19 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
 .controller('GraphCtrl', function($scope, data, config) {
 
   if (data) {
-    $scope.chartType = config.chartType
+    $scope.chartType = config.chartType;
 
     if (config.chartType == "Table") {
-      $scope.header = eval(config.headerFormula)
-      $scope.data = eval(config.dataFormula)
+      $scope.header = eval(config.headerFormula);
+      $scope.data = eval(config.dataFormula);
     }
     if (config.chartType == "Text") {
-      $scope.data = JSON.stringify(data, null, ' ')
+      $scope.data = JSON.stringify(data, null, ' ');
     }
 
     if (['Bar', 'Line', 'Pie', 'Doughnut', 'Radar', 'Polar'].indexOf(config.chartType) != -1) {
-      $scope.labels = eval(config.labelsFormula)
-      $scope.data = eval(config.dataFormula)
+      $scope.labels = eval(config.labelsFormula);
+      $scope.data = eval(config.dataFormula);
     }
 
     if (['GoogleMap'].indexOf(config.chartType) != -1) {
@@ -77,9 +77,9 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
           longitude: -73
         },
         zoom: parseInt(config.scale)
-      }
-      $scope.points = eval(config.pointsFormula)
-      $scope.routes = eval(config.routesFormula)
+      };
+      $scope.points = eval(config.pointsFormula);
+      $scope.routes = eval(config.routesFormula);
     }
   }
 })
@@ -177,13 +177,13 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     "url": "api/countries",
     "Description": "Countries Reference API",
     "parameters": "rest_obeject_id"
-  }]
+  }];
 
   $scope.setWebservice = function(){
     var item = $scope.selectedWebservice
     config.url = item.url;
     config.param = "?"+item.parameters.split("+").join("=*,")+"=*";
-  }
+  };
 
   $scope.chartOptions = [
     "Table",
@@ -194,13 +194,13 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     'Radar',
     'Polar',
     "GoogleMap",
-  ]
+  ];
 
   $scope.callTI = function() {
 
-    var token = $rootScope.token
+    var token = $rootScope.token;
     $http.defaults.headers.common.Authorization = "Token " + token;
-    var json = "application/json"
+    var json = "application/json";
     $http.defaults.headers.common.Accept = json;
     $http.defaults.headers.common["Content-Type"] = json;
 
@@ -210,27 +210,27 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
 
     var url = config.url;
     var param = config.param;
-    var totalUrl = url + param
+    var totalUrl = url + param;
 
     $http.get(totalUrl).success(function(data) {
-      $scope.data = JSON.stringify(data, null, " ")
+      $scope.data = JSON.stringify(data, null, " ");
     }).error(function(error) {
-      $scope.data = JSON.stringify(error, null, " ")
+      $scope.data = JSON.stringify(error, null, " ");
     });
   }
 
   if (config.cache) {
-    $scope.data = JSON.stringify(config.data)
+    $scope.data = JSON.stringify(config.data);
   }
 
   $scope.toggleCache = function() {
     if (!config.cache) {
-      config.cache = true
-      config.data = JSON.parse($scope.data)
+      config.cache = true;
+      config.data = JSON.parse($scope.data);
     } else {
-      config.cache = false
-      config.data = ""
-      $scope.data = ""
+      config.cache = false;
+      config.data = "";
+      $scope.data = "";
     }
   }
 });
@@ -252,36 +252,36 @@ angular.module('adf.widget.Parameters', ['adf.provider'])
 .controller('ParamCtrl', function($scope, config, $rootScope) {
 
   if (!$rootScope.parameters) {
-    $rootScope.parameters = {}
+    $rootScope.parameters = {};
     config.parameters.forEach(function(value, index) {
-      $rootScope.parameters[value.name] = value.value
+      $rootScope.parameters[value.name] = value.value;
     })
     $rootScope.$broadcast('widgetConfigChanged');
   }
 
   $scope.refresh = function() {
     config.parameters.forEach(function(value, index) {
-      $rootScope.parameters[value.name] = value.value
+      $rootScope.parameters[value.name] = value.value;
     })
     $rootScope.$broadcast('widgetConfigChanged');
   }
-  
+
 })
 
 .controller('ParamEditCtrl', function($scope, config, $rootScope) {
 
   if (!config.parameters) {
-    config.parameters = []
+    config.parameters = [];
   }
   $scope.addParam = function() {
     config.parameters.push({
       name: $scope.inputname,
       value: ""
-    })
-  }
+    });
+  };
   $scope.deleteParam = function(param) {
-    var index = config.parameters.indexOf(param)
-    config.parameters.splice(index, 1)
-  }
+    var index = config.parameters.indexOf(param);
+    config.parameters.splice(index, 1);
+  };
 
 })

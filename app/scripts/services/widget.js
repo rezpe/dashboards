@@ -7,7 +7,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     .widget('Graph', {
       title: 'Graph',
       description: 'It shows a graph',
-      templateUrl: '{widgetsPath}/scripts/services/view.html',
+      templateUrl: '{widgetsPath}/template/view.html',
       reload: true,
       controller: 'GraphCtrl',
       resolve: {
@@ -45,7 +45,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
         }
       },
       edit: {
-        templateUrl: '{widgetsPath}/scripts/services/edit.html',
+        templateUrl: '{widgetsPath}/template/edit.html',
         controller: 'EditGraphCtrl',
       }
     });

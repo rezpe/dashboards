@@ -24,29 +24,27 @@ angular.module('tiPortal3App')
       FileSaver.saveAs(blob, "dashboard.json");
     };
 
-    $scope.loadModel = function() {
-      var inputElement = $("#inputFile")[0];
-      inputElement.addEventListener("change", handleFiles, false);
-
-      var handleFiles = function () {
-        var selected_file = $("#inputFile")[0].files[0];
-        var r = new FileReader();
-        r.onload = function(e) {
-          var contents = e.target.result;
-          //Put the file in the list
-          var load = JSON.parse(contents);
-
-          //Add to objects
-          $scope.$apply(function() {
-            localStorageService.set("dashboard", JSON.stringify(load));
-            $scope.dashboard = {
-              model: load
-            };
-          });
-        };
-        r.readAsText(selected_file);
+    var handleFiles = function () {
+      var selected_file = $("#inputFile")[0].files[0];
+      var r = new FileReader();
+      r.onload = function(e) {
+        var contents = e.target.result;
+        //Put the file in the list
+        var load = JSON.parse(contents);
+        //Add to objects
+        $scope.$apply(function() {
+          localStorageService.set("dashboard", JSON.stringify(load));
+          $scope.dashboard = {
+            model: load
+          };
+        });
       };
-      inputElement.click();
+      r.readAsText(selected_file);
+    };
+    $("#inputFile").change(handleFiles);
+
+    $scope.loadModel = function() {
+      $("#inputFile").trigger("click");
     };
 
     var model = JSON.parse(localStorageService.get("dashboard"));

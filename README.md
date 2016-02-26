@@ -1,4 +1,6 @@
-# ti-portal3
+# Dashboards
+
+Dashboards provide an easy way to build dashboards consuming Web Services or just static data in ANY format.
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.14.0.

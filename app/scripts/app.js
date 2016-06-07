@@ -18,7 +18,6 @@ angular
     'ngTouch',
     'adf',
     'adf.structures.base',
-    'adf.widget.clock',
     'adf.widget.Graph',
     'ui.codemirror',
     'uiGmapgoogle-maps',

@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row-fluid">
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="sr-only">Name</label>
+                <input class="form-control" ng-model=name>
+            </div>
+            <button type="button" class="btn btn-default" ng-click="add()"><span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <a type="button" class="btn btn-success pull-right" ng-click="loadFile()"><span class="glyphicon glyphicon-upload"></span></a>
+            </span>
+            <input style="visibility:hidden;" type="file" id="inputFile" />
+        </form>
+
+    </div>
+    <hr/>
+    <div class="row">
+        <ul class="list-group">
+            <li ng-repeat="object in objects" class="list-group-item clearfix">
+                <a href="#/object/{{object}}">{{object}}</a>
+
+                <span class="pull-right button-group">
+                <a type="button" class="btn btn-danger"ng-click="remove(object)"><span class="glyphicon glyphicon-remove"></span>
+                </a>
+                </span>
+
+                <span class="pull-right button-group">
+                <a type="button" class="btn btn-primary"ng-click="saveAsFile(object)"><span class="glyphicon glyphicon-save"></span>
+                </a>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

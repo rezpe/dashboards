@@ -1,7 +1,7 @@
 <form role="form">
   <div class="form-group">
     <h2>Web Service Description</h2>
-    </br> 
+    </br>
     <label for="sample">Enter url</label>
     <input type="text" class="form-control" ng-model="config.url" />
 
@@ -88,8 +88,8 @@
 
     <div class="form-group" >
       Google Map Chart expects the center to be a place that can be geolocated. The scale is a the zoom
-      level (integer between 1-10). The points to be an array of objects with name, latitude and
-      longitude attribute (ex: [{ name:"City A", latitude: 2.3, longitude:3.4 }, ... ]).
+      level (integer between 1-10). The points to be an array of objects with id, name, latitude and
+      longitude attribute (ex: [{ id: "City A", name:"City A", latitude: 2.3, longitude:3.4 }, ... ]).
       The routes need to be an array of objects with attribute origin (string), destination (string)
       path which is an array of objects with latitude and longitude attributes
       (ex: [{ origin: "Paris", destination: "Madrid", path:[{longitude:2.3,latitude:3.4},{longitude:2.3,latitude:3.4}]}, ...])

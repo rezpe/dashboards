@@ -1,0 +1,10 @@
+.done-true {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.inout {
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #ccc;
+}

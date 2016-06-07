@@ -1,0 +1,25 @@
+/* Parachute Webfont kit build for AMADEUS June 24, 2013
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * Developer's URL: http://www.parachute.gr
+ * Copyright (c) 2013 Parachute. All rights reserved.
+ * Licensed pageviews: 1.000.000
+ * 
+*/
+
+
+
+@font-face {
+    font-family: 'amadeus';
+    src: url('amadeus-italic-web.eot');
+    src: url('amadeus-italic-web.eot?#iefix') format('embedded-opentype'),
+         url('amadeus-italic-web.woff') format('woff'),
+         url('amadeus-italic-web.ttf') format('truetype'),
+         url('amadeus-italic-web.svg#amadeusitalic') format('svg');
+    font-weight: 400;
+    font-style: italic;
+
+}

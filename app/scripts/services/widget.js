@@ -71,10 +71,11 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     }
 
     if (['GoogleMap'].indexOf(config.chartType) != -1) {
+      debugger;
       $scope.map = {
         center: {
-          latitude: 45,
-          longitude: -73
+          latitude: eval(config.center)[0],
+          longitude: eval(config.center)[1]
         },
         zoom: parseInt(config.scale)
       };

@@ -8,7 +8,7 @@
  * Controller of the tiPortal3App
  */
 angular.module('tiPortal3App')
-  .controller('MainCtrl', function(FileSaver, $scope, $rootScope, localStorageService) {
+  .controller('MainCtrl', function(FileSaver, $scope, $rootScope, localStorageService, $http) {
 
     $scope.$watch("token", function notify(newvalue, oldvalue) {
       $rootScope.token = newvalue;
@@ -24,7 +24,7 @@ angular.module('tiPortal3App')
       FileSaver.saveAs(blob, "dashboard.json");
     };
 
-    var handleFiles = function () {
+    var handleFiles = function() {
       var selected_file = $("#inputFile")[0].files[0];
       var r = new FileReader();
       r.onload = function(e) {
@@ -71,5 +71,27 @@ angular.module('tiPortal3App')
       localStorageService.set(name, model);
       localStorageService.set("dashboard", JSON.stringify(model));
     });
+
+    $scope.getURL = function() {
+      $('#getURL').modal('show')
+    }
+
+    $scope.loadURL = function() {
+      $('#getURL').modal('hide');
+
+      $http({
+        method: 'GET',
+        url: $scope.dashURL
+      }).then(function successCallback(response) {
+        var dash = response.data
+        localStorageService.set("dashboard", JSON.stringify(dash));
+        $scope.dashboard = {
+          model: dash
+        };
+      }, function errorCallback(response) {
+        console.log("Incorrect URL")
+      });
+
+    }
 
   });

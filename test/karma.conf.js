@@ -51,6 +51,7 @@ module.exports = function(config) {
       'bower_components/angular-file-saver/dist/angular-file-saver.bundle.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/jsonstat/json-stat.js',
+      'bower_components/d3/d3.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

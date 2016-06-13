@@ -70,8 +70,15 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
       $scope.data = eval(config.dataFormula);
     }
 
+    if (["Force"].indexOf(config.chartType) != -1) {
+      $scope.data = data;
+    }
+
+    if (["Circle Pack"].indexOf(config.chartType) != -1) {
+      $scope.data = data;
+    }
+
     if (['GoogleMap'].indexOf(config.chartType) != -1) {
-      debugger;
       $scope.map = {
         center: {
           latitude: eval(config.center)[0],
@@ -195,6 +202,8 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     'Radar',
     'Polar',
     "GoogleMap",
+    "Force",
+    "Circle Pack"
   ];
 
   $scope.callTI = function() {

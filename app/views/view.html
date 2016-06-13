@@ -32,7 +32,6 @@
   <canvas id="base" class="chart-base" chart-type="chartType" data="data" labels="labels" legend="true"></canvas>
 </div>
 
-
 <ui-gmap-google-map ng-if="chartType=='GoogleMap'" center='map.center' zoom='map.zoom'>
 
   <ui-gmap-markers models='points' coords="'self'">
@@ -42,3 +41,11 @@
   </ui-gmap-polylines>
 
 </ui-gmap-google-map>
+
+<div ng-if="['Force'].indexOf(chartType)!=-1">
+  <forcechart data="data"></forcechart>
+</div>
+
+<div ng-if="['Circle Pack'].indexOf(chartType)!=-1">
+  <circlepackchart data="data"></circlepackchart>
+</div>

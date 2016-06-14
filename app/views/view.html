@@ -37,7 +37,7 @@
   <ui-gmap-markers models='points' coords="'self'">
   </ui-gmap-markers>
 
-  <ui-gmap-polylines models='routes' path="'path'" stroke="'stroke'" geodesic="true">
+  <ui-gmap-polylines models='routes' path="'path'" stroke="'stroke'" geodesic="'geodesic'" visible="'visible'">
   </ui-gmap-polylines>
 
 </ui-gmap-google-map>
@@ -48,4 +48,8 @@
 
 <div ng-if="['Circle Pack'].indexOf(chartType)!=-1">
   <circlepackchart data="data"></circlepackchart>
+</div>
+
+<div ng-if="['Sankey'].indexOf(chartType)!=-1">
+  <sankeychart data="data"></sankeychart>
 </div>

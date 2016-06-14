@@ -2,6 +2,22 @@
 
 * We add a directive with the code specifying the data, width and height of the Chart
 
+```javascript
+angular.module('tiPortal3App')
+  .directive('circlepackchart', function() {
+    return {
+      template: '<div></div>',
+      restrict: 'E',
+      scope: {
+        data: "=",
+      },
+      link: function postLink(scope, element, attrs) {
+        //Code to be written here
+      }
+    };
+  });
+  ```
+
 * We add the css in the charts.css file with the directive name
 
 * We add the chart type in the view.html

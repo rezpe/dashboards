@@ -78,6 +78,10 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
       $scope.data = data;
     }
 
+    if (["Sankey"].indexOf(config.chartType) != -1) {
+      $scope.data = data;
+    }
+
     if (['GoogleMap'].indexOf(config.chartType) != -1) {
       $scope.map = {
         center: {
@@ -88,6 +92,7 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
       };
       $scope.points = eval(config.pointsFormula);
       $scope.routes = eval(config.routesFormula);
+      $scope.routes.forEach(function(v,i){ v.geodesic=true})
     }
   }
 })
@@ -203,7 +208,8 @@ angular.module('adf.widget.Graph', ['adf.provider', ])
     'Polar',
     "GoogleMap",
     "Force",
-    "Circle Pack"
+    "Circle Pack",
+    "Sankey"
   ];
 
   $scope.callTI = function() {
